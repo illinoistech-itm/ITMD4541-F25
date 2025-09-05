@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Week 3 Demo</title>
+    <link href="style.css" rel="stylesheet" />
+    <style>
+      :root {
+        --color-txt: blue;
+      }
+      * {
+        box-sizing: border-box;
+      }
+
+      p {
+        color: #888;
+        color: var(--color-txt);
+      }
+
+      div[data-container-name="This is our div"] {
+        background-color: #f77979;
+        padding: 10px;
+      }
+
+      div[data-container-name="This is our div"] > p {
+        background-color: #fff;
+        padding: 10px;
+      }
+      .redtext.links {
+        color: yellow;
+      }
+      .redtext {
+        color: red;
+      }
+
+      .links {
+        color: blueviolet;
+      }
+
+      #heading2 {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Week 3 Demo</h1>
+    <p>
+      Lorem ipsum dolor sit amet,
+      <a class="links redtext" href="https://google.com"
+        >consectetur adipisicing elit</a
+      >. Porro consequuntur, praesentium dolor maiores modi facilis itaque
+      delectus eligendi! Corporis itaque cumque error atque a saepe magni,
+      pariatur nihil possimus animi!
+    </p>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro
+      consequuntur, praesentium dolor maiores modi facilis itaque delectus
+      eligendi! Corporis itaque cumque error atque a saepe magni, pariatur nihil
+      possimus animi!
+    </p>
+    <p>
+      Lorem ipsum <a class="links" href="https://www.iit.edu">IIT</a> dolor sit
+      amet, consectetur adipisicing elit. Porro consequuntur, praesentium dolor
+      maiores modi facilis itaque delectus eligendi! Corporis itaque cumque
+      error atque a saepe magni, pariatur nihil possimus animi!
+    </p>
+    <h2 id="heading2">Heading 2</h2>
+    <div data-container-name="This is our div">
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro
+        consequuntur, praesentium dolor maiores modi facilis itaque delectus
+        eligendi! Corporis itaque cumque error atque a saepe magni, pariatur
+        nihil possimus animi!
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro
+        consequuntur, praesentium dolor maiores modi facilis itaque delectus
+        eligendi! Corporis itaque cumque error atque a saepe magni, pariatur
+        nihil possimus animi!
+      </p>
+      <p style="color: red">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro
+        consequuntur, praesentium dolor maiores modi facilis itaque delectus
+        eligendi! Corporis itaque cumque error atque a saepe magni, pariatur
+        nihil possimus animi!
+      </p>
+    </div>
+    <input type="checkbox" checked />
+    <img src="https://via.placeholder.com/150" alt="placeholder image" />
+  </body>
+</html>
