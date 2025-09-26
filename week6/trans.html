@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            margin: 20px 0;
+        }
+        #blue-box {
+            background-color: blue;
+            transform: rotateY(45deg);
+        }
+        #pcontainer {
+            perspective: 300px;
+            width: 200px;
+        }
+        #box1 {
+            transition-property: background-color, width, transform;
+            transition-duration: 2s, 3s, 4s;
+            transition-delay: 0s, 2s, 1s;
+        }
+        #box1:hover {
+            background-color: greenyellow;
+            width: 400px;
+            transform: rotateZ(45deg);
+        }
+        #box2 {
+            transform: rotate(45deg) translate(100px, 100px);
+        }
+    </style>
+</head>
+<body>
+    <div class="box" id="box1"></div>
+    <div class="box" id="box2"></div>
+    <div id="pcontainer">
+        <div class="box" id="blue-box"></div>
+    </div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+</body>
+</html>
