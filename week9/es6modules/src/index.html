@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ES Modules</title>
+    <script type="module" src="main.js"></script>
+</head>
+<body>
+    <h1>Hello, ES Modules</h1>
+    <button id="btn">Click Me!</button>
+
+    <script type="module">
+        import {sum, PI} from './math_module.js';
+        //import named export
+        console.log('--Import Named Export--');
+        console.log('Sum1: ' + sum(1,2,3,4,5,6));
+        console.log('PI: ' + PI);
+    </script>
+
+    <script type="module">
+        import * as mathMod from './math_module.js';
+        //all named exports as Object
+        console.log('--Import all named exports as object--');
+        console.log(mathMod);
+        console.log('Sum2: ' + mathMod.sum(1,2,3,4,5));
+        console.log('PI2: ' + mathMod.PI);
+        let c = new mathMod.Circle(5);
+        console.log('Circle Area: ' + c.area);
+    </script>
+    
+    <script type="module">
+        import {sum as s, Rectangle as Rect, Circle} from './math_module.js';
+        //import named exports with alias
+        console.log('--Import named exports with alias--');
+        let c = new Circle(5);
+        console.log('Circle circumference: ' + c.circumference);
+        let r = new Rect(8, 5);
+        console.log('Rectangle Perimeter: ' + r.perimeter);
+        console.log('Sum3: ' + s(1,2,3,4) );
+    </script>
+
+    <script type="module">
+        import mathMod2 from './math_module.js';
+        //import default export
+        console.log('--Import default export--');
+        console.log(mathMod2);
+        console.log('Sum4: ' + mathMod2.sum(1,2,3,4,5));
+        let c = new mathMod2.Circle(7);
+        console.log('Circle Area: ' + c.calcArea());
+    </script>
+
+    <script type="module">
+        import o, {msg} from './main.js';
+        //import default export and named export from main.js
+        console.log('--import default export and named export from main.js--');
+        console.log(o);
+        msg();
+    </script>
+   
+</body>
+</html>

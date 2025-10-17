@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event bubbling and capture</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        div {
+            background-color: red;
+            padding: 30px;
+            width: 100%;
+            cursor: pointer;
+        }
+        div > div {
+            background-color: green;
+        }
+        div > div > div {
+            background-color: blue;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Event bubbling and capture</h1>
+    <h2>Event handler registered in bubbling phase (default)</h2>
+    <div class="b" data-color="red">
+        <div class="b" data-color="green">
+            <div class="b" data-color="blue">Click Me</div>
+        </div>
+    </div>
+    <script>
+        let divsb = document.querySelectorAll('div.b');
+        divsb.forEach(e => {
+            e.addEventListener('click', evt => console.log('Bubble: ' + evt.currentTarget.getAttribute('data-color')));
+        });
+    </script>
+    <h2>Event handler registered in capturing phase</h2>
+    <div class="c" data-color="red">
+        <div class="c" data-color="green">
+            <div class="c" data-color="blue">Click Me</div>
+        </div>
+    </div>
+    <script>
+        let divsc = document.querySelectorAll('div.c');
+        divsc.forEach(e => {
+            e.addEventListener('click', evt => console.log('Capture: ' + evt.currentTarget.getAttribute('data-color')), true);
+        });
+    </script>
+    <h2>Event handlers registered in both phases</h2>
+    <div class="a" data-color="red">
+        <div class="a" data-color="green">
+            <div class="a" data-color="blue">Click Me</div>
+        </div>
+    </div>
+    <script>
+        let divsa = document.querySelectorAll('div.a');
+        divsa.forEach(e => {
+            e.addEventListener('click', evt => console.log('Bubble: ' + evt.currentTarget.getAttribute('data-color')));
+            e.addEventListener('click', evt => console.log('Capture: ' + evt.currentTarget.getAttribute('data-color')), true);
+        });
+    </script>
+    <h2>Event handler registered in bubbling phase (default) with stopPropagation</h2>
+    <div class="s" data-color="red">
+        <div class="s" data-color="green">
+            <div class="s" data-color="blue">Click Me</div>
+        </div>
+    </div>
+    <script>
+        let divss = document.querySelectorAll('div.s');
+        divss.forEach(e => {
+            e.addEventListener('click', evt => {
+                evt.stopPropagation();
+                console.log('Bubble: ' + evt.currentTarget.getAttribute('data-color'));
+            });
+        });
+    </script>
+    <h2>Event handler registered in capturing phase with stopPropagation</h2>
+    <div class="r" data-color="red">
+        <div class="r" data-color="green">
+            <div class="r" data-color="blue">Click Me</div>
+        </div>
+    </div>
+    <script>
+        let divsr = document.querySelectorAll('div.r');
+        divsr.forEach(e => {
+            e.addEventListener('click', evt => {
+                evt.stopPropagation();
+                console.log('Capture: ' + evt.currentTarget.getAttribute('data-color'));
+            }, true);
+        });
+    </script>
+</body>
+</html>

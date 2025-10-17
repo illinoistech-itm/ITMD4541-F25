@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM Event Handling</title>
+    <style>
+      .btn {
+        background-color: red;
+        padding: 25px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Event Method 1 -->
+    <script>
+      function clickMethod1(text) {
+        console.log(text);
+        alert(text);
+      }
+    </script>
+    <div class="btn" onclick="clickMethod1('I was clicked with method 1')">
+      Click Me!
+    </div>
+    <hr />
+
+    <!-- Event Method 2 -->
+    <div class="btn" id="method2" style="background-color: blue">Click Me!</div>
+    <script>
+      function alertMe(text) {
+        console.log(text);
+        alert(text);
+      }
+
+      function eventhandler(e) {
+        console.log(e);
+        alertMe("Clicked with Method 2!");
+      }
+
+      let d2 = document.getElementById("method2");
+      d2.onclick = eventhandler;
+    </script>
+    <hr />
+
+    <!-- Event Method 3 -->
+    <div class="btn" id="method3" style="background-color: green">
+      Click Me!
+    </div>
+    <script>
+      document.getElementById("method3").addEventListener("click", function () {
+        console.log("I was clicked with Method 3!");
+        alert("I was clicked with Method 3!");
+      });
+
+      function method3(e) {
+        console.log(e);
+        console.log("Second event handler on method 3");
+        alert("Second event handler on method 3");
+      }
+
+      document.getElementById("method3").addEventListener("click", method3);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic DOM Demo</title>
+</head>
+<body>
+    <!-- 1 -->
+    <h1 id="mainheadline">Basic DOM Demo</h1>
+    <button id="headlinebtn">Change Headline</button>
+    <hr>
+
+    <!-- 2 -->
+    <div>
+        <h2 id="headline2">Hello World!</h2>
+        <label>Name: <input type="text" id="nameIn" placeholder="Enter your name"></label>
+        <button id="hellobtn">Say Hello!</button>
+    </div>
+    <hr>
+
+    <!-- 3 -->
+    <div>
+        <h2>Square a number</h2>
+        <label>Enter a Number: <input type="text" id="numIn"></label>
+        <label>Square Value: <input type="text" id="sqVal" disabled></label>
+        <button id="sqBtn">Square my Number!</button>
+        <button id="clearBtn">Clear Results</button>
+    </div>
+    <hr>
+
+    <script>
+    // 1
+    document.getElementById('headlinebtn').addEventListener('click', function(){
+        document.getElementById('mainheadline').innerText = 'This is a changed headline';
+    });
+
+    // 2
+    document.getElementById('hellobtn').addEventListener('click', function(e){
+        console.log('Hello Btn Worked!');
+        let myName = document.getElementById('nameIn').value.trim();
+        if (myName === '') {
+            alert('Noting has been entered');
+            document.getElementById('nameIn').value = '';
+        } else {
+            document.getElementById('headline2').innerText = 'Hello ' + myName;
+            document.getElementById('nameIn').value = '';
+        }
+
+    });
+
+    // 3
+    function squareMyNumber(){
+        console.log('Square function runs');
+        let num = document.getElementById('numIn').value.trim();
+        console.log(num);
+        if (num === '' || isNaN(Number(num))) {
+            alert('You must enter a number');
+            document.getElementById('numIn').value = '';
+            document.getElementById('sqVal').value = '';
+        } else {
+            document.getElementById('sqVal').value = num * num;
+        }
+    }
+
+    document.getElementById('sqBtn').addEventListener('click', squareMyNumber);
+    document.getElementById('clearBtn').addEventListener('click', function(){
+        document.getElementById('numIn').value = '';
+        document.getElementById('sqVal').value = '';
+    });
+    </script>
+</body>
+</html>

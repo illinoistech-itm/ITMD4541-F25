@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>factory</title>
+</head>
+<body>
+    <script>
+        function Car(wheels) {
+            this.wheels = wheels;
+        }
+
+        function Cycle(wheels) {
+            this.wheels = wheels;
+        }
+
+        function carFactory(wheels) {
+            if (wheels === 2) {
+                return new Cycle(wheels);
+            } else {
+                return new Car(wheels);
+            }
+        }
+
+        let vehicle = carFactory(2);
+    </script>
+</body>
+</html>

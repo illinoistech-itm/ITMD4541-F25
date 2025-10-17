@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>constructor function</title>
+</head>
+<body>
+    <script>
+        function Car(d, c) {
+            this.doors = d;
+            this.color = c;
+            let miles = 0;
+            let that = this;
+
+            this.start = function(){
+                console.log('Car with ' + this.doors + ' doors has started!');
+                console.log('Miles: ' + miles);
+            };
+
+            let report = function() {
+                console.log('Run Report');
+                console.log('Miles: ' + miles);
+                //console.log('Doors: ' + this.doors);
+                console.log('Doors: ' + that.doors);
+            };
+
+            this.runReport = function(){
+                //report.call(this);
+                report();
+            };
+
+            this.addMile = function(){
+                miles = miles + 1;
+            };
+            
+        }
+
+        let c = new Car(4, 'black');
+    </script>
+</body>
+</html>

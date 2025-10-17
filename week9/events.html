@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="event">Event</button>
+    <button id="cevent">Custom Event</button>
+
+    <script>
+        document.getElementById('event').addEventListener('click', function(){
+            document.dispatchEvent(new Event('myevent1'));
+        });
+
+        document.getElementById('cevent').addEventListener('click', function(){
+            var event = new CustomEvent('myevent2', {
+                detail: {
+                    name: 'Custom Event 2'
+                }
+            });
+
+            document.dispatchEvent(event);
+        });
+
+        document.addEventListener('myevent1', function(){
+            alert('Event 1');
+        });
+
+        document.addEventListener('myevent2', function(e){
+            alert(e.detail.name);
+        });
+    </script>
+</body>
+</html>

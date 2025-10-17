@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Basic DOM Creation</title>
+    <style>
+      .redtext {
+        color: #cc0000;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="btn">Click</button>
+    <div id="contentarea"></div>
+    <script>
+      document.getElementById("btn").addEventListener("click", function () {
+        console.log("btn clicked");
+
+        let headline = document.createElement("h1");
+        headline.id = "main-headline";
+        headline.setAttribute("class", "redtext");
+        let hcontent = document.createTextNode("Hello Basic DOM Creation Demo");
+        headline.appendChild(hcontent);
+        document.getElementById("contentarea").appendChild(headline);
+
+        let container = document.createElement("div");
+        let para = document.createElement("p");
+        para.appendChild(
+          document.createTextNode(
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente cupiditate temporibus voluptatum voluptate soluta expedita provident quod eos maiores dicta aspernatur repellendus minus dolores quae aliquid, ut, modi iure quasi."
+          )
+        );
+        let head3 = document.createElement("h3");
+        head3.appendChild(document.createTextNode("Subhead 3"));
+        container.appendChild(head3);
+        container.appendChild(para);
+        document.getElementById("contentarea").appendChild(container);
+      });
+    </script>
+  </body>
+</html>
