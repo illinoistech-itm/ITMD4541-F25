@@ -1,1 +1,1 @@
-(()=>{(function(){console.log("main.js loaded");console.log("ITMD4541F25")})();})();
+(()=>{(function(){console.log("main.js loaded"),console.log("ITMD4541F25")})();})();
