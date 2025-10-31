@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript">
+		function success(p){
+			console.log(p);
+			alert('Lat: ' + p.coords.latitude + ', Long: ' + p.coords.longitude);
+			document.getElementsByTagName('body')[0].appendChild(document.createTextNode('Lat: ' + p.coords.latitude + ', Long: ' + p.coords.longitude));
+		}
+
+		function error(e){
+			console.log(e);
+			alert('Error: ' + e.message);
+		}
+
+		navigator.geolocation.getCurrentPosition(success, error);
+		
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

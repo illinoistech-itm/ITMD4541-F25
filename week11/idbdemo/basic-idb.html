@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic IndexDB</title>
+</head>
+<body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+
+            console.log('DOM Ready');
+
+            let db;
+            let openRequest = window.indexedDB.open('basicF23', 2);
+
+            openRequest.onupgradeneeded = function(e){
+                console.log('upgrade needed');
+
+                let thisDB = e.target.result;
+
+                if (!thisDB.objectStoreNames.contains('firstOS')) {
+                    thisDB.createObjectStore('firstOS');
+                }
+
+                if (!thisDB.objectStoreNames.contains('person')) {
+                    thisDB.createObjectStore('person', {autoIncrement: true});
+                }
+            };
+
+            openRequest.onsuccess = function(e){
+                console.log('success');
+
+                db = e.target.result;
+                // let trans = db.transaction(['firstOS'], 'readwrite');
+                // let store = trans.objectStore('firstOS');
+                // let obj = {name: 'Brian', email: 'bbailey4@iit.edu'};
+                // store.add(obj, 'bbailey4');
+                let trans = db.transaction(['person'], 'readwrite');
+                let store = trans.objectStore('person');
+                let obj = {name: 'Brian', email: 'bbailey4@iit.edu'};
+                store.add(obj);
+            };
+
+            openRequest.onerror = function(e){
+                console.log('Error: ' + e);
+            };
+
+        }); // dom ready
+    </script>
+</body>
+</html>

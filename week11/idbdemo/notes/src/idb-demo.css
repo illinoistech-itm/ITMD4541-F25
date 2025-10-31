@@ -1,0 +1,25 @@
+body {
+    margin-top: 20px;
+}
+
+.note-actions {
+    text-align: right;
+}
+
+.note-actions button {
+    margin: 5px 5px;
+}
+
+/* Grid Styles */
+@supports (display: grid) {
+    #note-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-gap: 20px;
+        grid-auto-flow: dense;
+    }
+    .note {
+        background-color:yellow;
+        padding: 15px;
+    }
+}

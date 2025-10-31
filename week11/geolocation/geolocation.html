@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Geolocation</title>
+    <script>
+        let options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+        };
+
+        function success(pos) {
+            let crd = pos.coords;
+
+            console.log('Your current position is:');
+            console.log(`Latitude : ${crd.latitude}`);
+            console.log(`Longitude: ${crd.longitude}`);
+            console.log(`More or less ${crd.accuracy} meters.`);
+
+            let wrapper = document.createElement('div');
+            let text = `Your current position is: <br>
+            Latitude: ${crd.latitude}<br>
+            Longitude: ${crd.longitude}<br>
+            More or less ${crd.accuracy} meters.`;
+            wrapper.innerHTML = text;
+            document.getElementsByTagName('body')[0].appendChild(wrapper);
+        }
+
+        function error(err) {
+            console.warn(`ERROR(${err.code}): ${err.message}`);
+
+            let wrapper = document.createElement('div');
+            let text = `Error(${err.code}): ${err.message}`;
+            wrapper.innerHTML = text;
+            document.getElementsByTagName('body')[0].appendChild(wrapper);
+        }
+
+        navigator.geolocation.getCurrentPosition(success, error, options);
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

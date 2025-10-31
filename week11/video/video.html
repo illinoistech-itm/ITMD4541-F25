@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>HTML5 Video</title>
+</head>
+<body>
+	<button id="btn">Play</button>
+	<button id="btn-stop">Pause</button>
+
+	<video id="vid" controls> 
+	  <source src="small.webm" type="video/webm"> 
+	  <source src="small.ogv" type="video/ogg"> 
+	  <source src="small.mp4" type="video/mp4">
+	  <source src="small.3gp" type="video/3gp">
+	</video>
+	
+	<script>
+		document.getElementById('btn').addEventListener('click', function(){
+			document.getElementById('vid').play();
+		});
+		document.getElementById('btn-stop').addEventListener('click', function(){
+			document.getElementById('vid').pause();
+		});
+		document.getElementById('vid').addEventListener('ended', function(e){
+			console.log(e);
+			alert('video is finished');
+		});
+	</script>
+</body>
+</html>

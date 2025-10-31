@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MutationObserver Demo</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .demo-box {
+            border: 2px solid #ccc;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .controls {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        .log {
+            background: #333;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .log p {
+            margin: 5px 0;
+            font-family: monospace;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 5px;
+            border-radius: 4px;
+            border: none;
+            background: #0066cc;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0052a3;
+        }
+    </style>
+</head>
+<body>
+    <h1>MutationObserver Demo</h1>
+    
+    <div class="demo-box" id="target">
+        <h2>Observable Content</h2>
+        <p>This content will be monitored for changes.</p>
+        <div id="dynamic-content">Initial content</div>
+    </div>
+
+    <div class="controls">
+        <h3>Controls</h3>
+        <button onclick="modifyText()">Modify Text</button>
+        <button onclick="addElement()">Add Element</button>
+        <button onclick="modifyAttribute()">Modify Attribute</button>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <div class="log" id="log">
+        <p>Mutation log will appear here...</p>
+    </div>
+
+    <script>
+        // Function to log mutations
+        function logMutation(msg) {
+            const log = document.getElementById('log');
+            const entry = document.createElement('p');
+            entry.textContent = `${new Date().toLocaleTimeString()}: ${msg}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // Clear log
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+
+        // Create MutationObserver instance
+        const observer = new MutationObserver((mutations) => {
+            console.log(mutations);
+            mutations.forEach((mutation) => {
+                console.log(mutation);
+                switch(mutation.type) {
+                    case 'childList':
+                        if (mutation.addedNodes.length > 0) {
+                            logMutation('Child node added');
+                        }
+                        if (mutation.removedNodes.length > 0) {
+                            logMutation('Child node removed');
+                        }
+                        break;
+                    case 'attributes':
+                        logMutation(`Attribute '${mutation.attributeName}' modified`);
+                        break;
+                    case 'characterData':
+                        logMutation('Text content modified');
+                        break;
+                }
+            });
+        });
+
+        // Configure and start observing
+        const target = document.getElementById('target');
+        observer.observe(target, {
+            attributes: true,
+            childList: true,
+            characterData: true,
+            subtree: true,
+            attributeOldValue: true
+        });
+
+        // Demo functions
+        function modifyText() {
+            const content = document.getElementById('dynamic-content');
+            content.textContent = 'Modified at ' + new Date().toLocaleTimeString();
+        }
+
+        function addElement() {
+            const newElement = document.createElement('p');
+            newElement.textContent = 'New element added';
+            target.appendChild(newElement);
+        }
+
+        function modifyAttribute() {
+            const timestamp = Date.now();
+            target.setAttribute('data-last-modified', timestamp);
+        }
+    </script>
+</body>
+</html>
