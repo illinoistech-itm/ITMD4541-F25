@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Async/Await Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            margin-top: 0;
+        }
+        .demo-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .output {
+            margin-top: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            min-height: 40px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #ddd;
+        }
+        .loading {
+            color: #667eea;
+            font-style: italic;
+        }
+        .success {
+            color: #28a745;
+        }
+        .error {
+            color: #dc3545;
+        }
+        code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Async/Await Demo</h1>
+        <p>This demo shows how <code>async/await</code> makes asynchronous JavaScript code easier to read and write.</p>
+
+        <div class="demo-section">
+            <h2>Example 1: Simple Delay</h2>
+            <p>Simulates fetching data with a 2-second delay</p>
+            <button onclick="simpleExample()">Run Simple Example</button>
+            <div id="output1" class="output">Click the button to start...</div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Example 2: Multiple API Calls</h2>
+            <p>Fetches data sequentially (one after another)</p>
+            <button onclick="sequentialExample()">Run Sequential Calls</button>
+            <div id="output2" class="output">Click the button to start...</div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Example 3: Parallel API Calls</h2>
+            <p>Fetches data in parallel using <code>Promise.all()</code></p>
+            <button onclick="parallelExample()">Run Parallel Calls</button>
+            <div id="output3" class="output">Click the button to start...</div>
+        </div>
+
+        <div class="demo-section">
+            <h2>Example 4: Error Handling</h2>
+            <p>Shows how to handle errors with try/catch</p>
+            <button onclick="errorExample()">Simulate Error</button>
+            <div id="output4" class="output">Click the button to start...</div>
+        </div>
+    </div>
+
+    <script>
+        // Helper function to simulate an API call
+        function fakeApiCall(data, delay = 2000, shouldFail = false) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    if (shouldFail) {
+                        reject(new Error('API call failed!'));
+                    } else {
+                        resolve(data);
+                    }
+                }, delay);
+            });
+        }
+
+        // Example 1: Simple async/await
+        async function simpleExample() {
+            const output = document.getElementById('output1');
+            output.innerHTML = '<span class="loading">⏳ Loading data...</span>';
+            
+            try {
+                const result = await fakeApiCall('Hello from the API!');
+                output.innerHTML = `<span class="success">✓ ${result}</span>`;
+            } catch (error) {
+                output.innerHTML = `<span class="error">✗ ${error.message}</span>`;
+            }
+        }
+
+        // Example 2: Sequential async calls
+        async function sequentialExample() {
+            const output = document.getElementById('output2');
+            output.innerHTML = '<span class="loading">⏳ Starting sequential calls...</span>';
+            
+            const startTime = Date.now();
+            
+            try {
+                output.innerHTML += '<br>⏳ Fetching user data...';
+                const user = await fakeApiCall({ id: 1, name: 'Alice' }, 1500);
+                
+                output.innerHTML += `<br><span class="success">✓ Got user: ${user.name}</span>`;
+                output.innerHTML += '<br>⏳ Fetching user posts...';
+                
+                const posts = await fakeApiCall(['Post 1', 'Post 2', 'Post 3'], 1500);
+                
+                output.innerHTML += `<br><span class="success">✓ Got ${posts.length} posts</span>`;
+                
+                const totalTime = ((Date.now() - startTime) / 1000).toFixed(1);
+                output.innerHTML += `<br><strong>Total time: ${totalTime}s</strong>`;
+            } catch (error) {
+                output.innerHTML += `<br><span class="error">✗ ${error.message}</span>`;
+            }
+        }
+
+        // Example 3: Parallel async calls
+        async function parallelExample() {
+            const output = document.getElementById('output3');
+            output.innerHTML = '<span class="loading">⏳ Starting parallel calls...</span>';
+            
+            const startTime = Date.now();
+            
+            try {
+                output.innerHTML += '<br>⏳ Fetching user, posts, and comments in parallel...';
+                
+                const [user, posts, comments] = await Promise.all([
+                    fakeApiCall({ id: 1, name: 'Bob' }, 1500),
+                    fakeApiCall(['Post A', 'Post B'], 1500),
+                    fakeApiCall(['Comment 1', 'Comment 2', 'Comment 3'], 1500)
+                ]);
+                
+                output.innerHTML += `<br><span class="success">✓ Got user: ${user.name}</span>`;
+                output.innerHTML += `<br><span class="success">✓ Got ${posts.length} posts</span>`;
+                output.innerHTML += `<br><span class="success">✓ Got ${comments.length} comments</span>`;
+                
+                const totalTime = ((Date.now() - startTime) / 1000).toFixed(1);
+                output.innerHTML += `<br><strong>Total time: ${totalTime}s (much faster!)</strong>`;
+            } catch (error) {
+                output.innerHTML += `<br><span class="error">✗ ${error.message}</span>`;
+            }
+        }
+
+        // Example 4: Error handling
+        async function errorExample() {
+            const output = document.getElementById('output4');
+            output.innerHTML = '<span class="loading">⏳ Attempting API call...</span>';
+            
+            try {
+                const result = await fakeApiCall('This will fail', 1500, true);
+                output.innerHTML = `<span class="success">✓ ${result}</span>`;
+            } catch (error) {
+                output.innerHTML = `<span class="error">✗ Error caught: ${error.message}</span>`;
+                output.innerHTML += '<br>The try/catch block prevented the app from crashing!';
+            }
+        }
+    </script>
+</body>
+</html>

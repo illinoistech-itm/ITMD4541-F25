@@ -1,0 +1,31 @@
+#content-wrapper {
+    max-width: 700px;
+    background-color: #ccc;
+    margin: 0 auto;
+    padding: 25px;
+    overflow: hidden;
+}
+
+#content-wrapper h1 {
+    text-align: center;
+    font-family: sans-serif;
+}
+
+#controls {
+    text-align: center;
+}
+
+#image-wrapper {
+    height: 400px;
+    margin: 20px 0;
+}
+
+#dog-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+#breed-select {
+    text-transform: capitalize;
+}

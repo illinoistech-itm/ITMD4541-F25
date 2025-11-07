@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="formcontrols">
+        <label>Name: <input type="text" name="name_in" id="name_in"></label><br>
+        <label>Email: <input type="text" name="email_in" id="email_in"></label><br>
+        <button id="btn-submit">POST with Fetch using JSON</button>
+        <button id="btn-submit2">POST with Fetch using form url encoded</button>
+        <button id="btn-submit3">POST with standard AJAX using JSON</button>
+        <button id="btn-submit4">POST with standard AJAX using form url encoded</button>
+    </div>
+    <div id="requestdata">
+        
+    </div>
+    <div id="results">
+
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function(){    
+        document.getElementById('btn-submit').addEventListener('click', function(){
+            let nameval = document.getElementById('name_in').value.trim();
+            let emailval = document.getElementById('email_in').value.trim();
+
+            let body = {name: nameval, email: emailval};
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+
+            fetch('postback.php', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: headers
+            }).then(function(res){
+                return res.json();
+            }).then(function(data){
+                console.log(data);
+                printRequestDataToPage(JSON.stringify(body));
+                printToPage(data);
+            });
+        });
+
+        document.getElementById('btn-submit2').addEventListener('click', function(){
+            let nameval = document.getElementById('name_in').value.trim();
+            let emailval = document.getElementById('email_in').value.trim();
+
+            let body = `name=${nameval}&email=${emailval}`;
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+            fetch('postback.php', {
+                method: 'post',
+                body: body,
+                headers: headers
+            }).then(function(res){
+                return res.json();
+            }).then(function(data){
+                console.log(data);
+                printRequestDataToPage(body);
+                printToPage(data);
+            });
+        });
+
+        document.getElementById('btn-submit3').addEventListener('click', function(){
+            let nameval = document.getElementById('name_in').value.trim();
+            let emailval = document.getElementById('email_in').value.trim();
+
+            let body = {name: nameval, email: emailval};
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'postback.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function(evt){
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    console.log(JSON.parse(this.responseText));
+                    printRequestDataToPage(JSON.stringify(body));
+                    printToPage(JSON.parse(this.responseText));
+                }
+            };
+            xhr.send(JSON.stringify(body));
+        });
+
+        document.getElementById('btn-submit4').addEventListener('click', function(){
+            let nameval = document.getElementById('name_in').value.trim();
+            let emailval = document.getElementById('email_in').value.trim();
+
+            let body = `name=${nameval}&email=${emailval}`;
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', 'postback.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function(evt){
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    console.log(JSON.parse(this.responseText));
+                    printRequestDataToPage(body);
+                    printToPage(JSON.parse(this.responseText));
+                }
+            };
+            xhr.send(body);
+        });
+
+        function printToPage(JSONdata){
+            let resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+
+            let head1 = document.createElement('h3');
+            head1.appendChild(document.createTextNode('JSON Response Data'));
+            resultsDiv.appendChild(head1);
+
+            let code = document.createElement('pre');
+            code.style.marginTop = '20px';
+            code.appendChild(document.createTextNode(JSON.stringify(JSONdata, undefined, 2)));
+            resultsDiv.appendChild(code);
+
+            let head2 = document.createElement('h3');
+            head2.appendChild(document.createTextNode('Formatted Response Data'));
+            resultsDiv.appendChild(head2);
+
+            let values = document.createElement('div');
+            values.style.marginTop = '20px';
+            let codeTxt = `<b>name:</b> ${JSONdata.post_data.name}<br><b>email:</b> ${JSONdata.post_data.email}<br><b>method:</b> ${JSONdata.http_method}<br><b>Request Content Type:</b> ${JSONdata.request_content_type}<br><b>Timestamp:</b> ${JSONdata.time}<br>`;
+            values.innerHTML = codeTxt;
+            resultsDiv.appendChild(values);
+        }
+
+        function printRequestDataToPage(data) {
+            let requestDiv = document.getElementById('requestdata');
+            requestDiv.innerHTML = '';
+
+            let head1 = document.createElement('h3');
+            head1.appendChild(document.createTextNode('Request Data'));
+            requestDiv.appendChild(head1);
+
+            let code = document.createElement('pre');
+            code.style.marginTop = '20px';
+            code.appendChild(document.createTextNode(data));
+            requestDiv.appendChild(code);
+        }
+    });//end DOMContentLoaded
+    </script>
+</body>
+</html>

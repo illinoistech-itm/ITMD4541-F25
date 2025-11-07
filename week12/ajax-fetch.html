@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX with Fetch</title>
+</head>
+<body>
+    <button id="btn">Click Me!</button>
+    <div id="results"></div>
+    
+    <script>
+        document.getElementById('btn').addEventListener('click', function(){
+            console.log('Button Clicked!');
+
+            fetch('http://jsonplaceholder.typicode.com/todos')
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(myJson){
+                console.log(myJson);
+                let table = document.createElement('table');
+                for(let i = 0; i < myJson.length; i++) {
+                    console.log(myJson[i]);
+                    let row = document.createElement('tr');
+                    let cellproduct = document.createElement('td');
+                    let protext = document.createTextNode(myJson[i].title);
+                    cellproduct.appendChild(protext);
+                    row.appendChild(cellproduct);
+                    let cellpr = document.createElement('td');
+                    let prtext = document.createTextNode(myJson[i].completed);
+                    cellpr.appendChild(prtext);
+                    row.appendChild(cellpr);
+                    table.appendChild(row);
+                }
+                document.getElementById('results').appendChild(table);
+            })
+            .catch(error => console.log(error));
+
+        }, false); //end button click event handler
+    </script>
+</body>
+</html>

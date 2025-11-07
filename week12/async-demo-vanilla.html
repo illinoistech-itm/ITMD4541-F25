@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .demo-container {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: white;
+        }
+        
+        .demo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        button:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .loading {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .code-preview {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 6px;
+            font-family: monospace;
+            margin-top: 1rem;
+            white-space: pre-wrap;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #3b82f6;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Async JavaScript Interactive Demos</h1>
+    
+    <div class="demo-container">
+        <div class="demo-header">
+            <h3 class="demo-title">Basic Promise</h3>
+            <button onclick="runBasicPromise()" id="basicBtn">Run Demo</button>
+        </div>
+        <div class="code-preview">
+new Promise((resolve, reject) => {
+    setTimeout(() => resolve("Success!"), 1000);
+});</div>
+        <div id="basicResult" class="result"></div>
+    </div>
+    
+    <div class="demo-container">
+        <div class="demo-header">
+            <h3 class="demo-title">Promise Chain</h3>
+            <button onclick="runPromiseChain()" id="chainBtn">Run Demo</button>
+        </div>
+        <div class="code-preview">
+getData()
+    .then(step1 => step1 + 1)
+    .then(step2 => step2 * 2)
+    .then(result => `Final result: ${result}`);</div>
+        <div id="chainResult" class="result"></div>
+    </div>
+    
+    <div class="demo-container">
+        <div class="demo-header">
+            <h3 class="demo-title">Promise.all()</h3>
+            <button onclick="runPromiseAll()" id="allBtn">Run Demo</button>
+        </div>
+        <div class="code-preview">
+Promise.all([
+    fetch('data1'), // takes 1s
+    fetch('data2'), // takes 2s
+    fetch('data3')  // takes 1.5s
+]);</div>
+        <div id="allResult" class="result"></div>
+    </div>
+    
+    <div class="demo-container">
+        <div class="demo-header">
+            <h3 class="demo-title">Error Handling</h3>
+            <button onclick="runErrorDemo()" id="errorBtn">Run Demo</button>
+        </div>
+        <div class="code-preview">
+riskyOperation()
+    .then(data => console.log(data))
+    .catch(error => console.error(error));</div>
+        <div id="errorResult" class="result"></div>
+    </div>
+    
+    <div class="demo-container">
+        <div class="demo-header">
+            <h3 class="demo-title">Async/Await</h3>
+            <button onclick="runAsyncAwait()" id="asyncBtn">Run Demo</button>
+        </div>
+        <div class="code-preview">
+async function getData() {
+    const result1 = await operation1();
+    const result2 = await operation2(result1);
+    return result2;
+}</div>
+        <div id="asyncResult" class="result"></div>
+    </div>
+
+    <script>
+        // Utility functions
+        function showResult(elementId, type, message) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = `result ${type}`;
+            element.innerHTML = type === 'loading' ? 
+                `<div class="spinner"></div>${message}` : message;
+        }
+        
+        function setButtonState(buttonId, disabled) {
+            document.getElementById(buttonId).disabled = disabled;
+        }
+        
+        // Simulate API call
+        function simulateAPI(delay, success = true) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    if (success) {
+                        resolve({ data: 'Success!' });
+                    } else {
+                        reject(new Error('Operation failed'));
+                    }
+                }, delay);
+            });
+        }
+        
+        // Demo 1: Basic Promise
+        async function runBasicPromise() {
+            setButtonState('basicBtn', true);
+            showResult('basicResult', 'loading', 'Processing...');
+            
+            try {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                showResult('basicResult', 'success', 'Promise resolved successfully!');
+            } catch (error) {
+                showResult('basicResult', 'error', error.message);
+            } finally {
+                setButtonState('basicBtn', false);
+            }
+        }
+        
+        // Demo 2: Promise Chain
+        async function runPromiseChain() {
+            setButtonState('chainBtn', true);
+            showResult('chainResult', 'loading', 'Processing chain...');
+            
+            try {
+                const step1 = await simulateAPI(1000);
+                showResult('chainResult', 'loading', 'Step 1 complete...');
+                
+                const step2 = await simulateAPI(1000);
+                showResult('chainResult', 'loading', 'Step 2 complete...');
+                
+                const step3 = await simulateAPI(1000);
+                showResult('chainResult', 'success', 'Chain completed successfully!');
+            } catch (error) {
+                showResult('chainResult', 'error', error.message);
+            } finally {
+                setButtonState('chainBtn', false);
+            }
+        }
+        
+        // Demo 3: Promise.all()
+        async function runPromiseAll() {
+            setButtonState('allBtn', true);
+            showResult('allResult', 'loading', 'Running parallel operations...');
+            
+            try {
+                await Promise.all([
+                    simulateAPI(1000),
+                    simulateAPI(2000),
+                    simulateAPI(1500)
+                ]);
+                showResult('allResult', 'success', 'All parallel operations completed!');
+            } catch (error) {
+                showResult('allResult', 'error', error.message);
+            } finally {
+                setButtonState('allBtn', false);
+            }
+        }
+        
+        // Demo 4: Error Handling
+        async function runErrorDemo() {
+            setButtonState('errorBtn', true);
+            showResult('errorResult', 'loading', 'Running risky operation...');
+            
+            try {
+                await simulateAPI(1500, false);
+                showResult('errorResult', 'success', 'This should not happen!');
+            } catch (error) {
+                showResult('errorResult', 'error', 'Error caught: ' + error.message);
+            } finally {
+                setButtonState('errorBtn', false);
+            }
+        }
+        
+        // Demo 5: Async/Await
+        async function runAsyncAwait() {
+            setButtonState('asyncBtn', true);
+            showResult('asyncResult', 'loading', 'Starting async operation...');
+            
+            try {
+                const result1 = await simulateAPI(1000);
+                showResult('asyncResult', 'loading', 'First await complete...');
+                
+                const result2 = await simulateAPI(1000);
+                showResult('asyncResult', 'success', 'Async/await operation completed!');
+            } catch (error) {
+                showResult('asyncResult', 'error', error.message);
+            } finally {
+                setButtonState('asyncBtn', false);
+            }
+        }
+    </script>
+</body>
+</html>

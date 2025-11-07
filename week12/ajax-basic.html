@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Basic</title>
+</head>
+<body>
+    <button id="btn">Click Me!</button>
+    <div id="results"></div>
+    
+    <script>
+        document.getElementById('btn').addEventListener('click', function(){
+            console.log('Button Clicked!');
+
+            let myRequest = new XMLHttpRequest();
+
+            myRequest.onreadystatechange = function(){
+                if (myRequest.readyState === 4 && myRequest.status === 200) {
+                    console.log(myRequest.responseText);
+                    console.log(JSON.parse(myRequest.responseText));
+
+                    let a = JSON.parse(myRequest.responseText);
+                    let table = document.createElement('table');
+                    for(let i = 0; i < a.length; i++) {
+                        console.log(a[i]);
+                        let row = document.createElement('tr');
+                        row.id = a[i].id;
+                        let cellproduct = document.createElement('td');
+                        let protext = document.createTextNode(a[i].title);
+                        cellproduct.appendChild(protext);
+                        row.appendChild(cellproduct);
+                        let cellpr = document.createElement('td');
+                        let prtext = document.createTextNode(a[i].completed);
+                        cellpr.appendChild(prtext);
+                        row.appendChild(cellpr);
+                        table.appendChild(row);
+                    }
+                    document.getElementById('results').appendChild(table);
+                }
+            };
+
+            myRequest.open('GET', 'http://jsonplaceholder.typicode.com/todos');
+            
+            myRequest.send();
+
+        }); //end button click event handler
+    </script>
+</body>
+</html>

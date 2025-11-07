@@ -1,0 +1,19 @@
+{
+  "name": "dogapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server ./dist -c-1",
+    "cp": "cp ./src/index.html ./src/styles.css ./dist/",
+    "build": "esbuild ./src/main.js --outfile=./dist/bundle.js --bundle --sourcemap --target=es2020",
+    "bundle": "esbuild ./src/main.js --outfile=./dist/bundle.js --bundle --sourcemap --target=es2015 --minify"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "esbuild": "^0.25.12",
+    "http-server": "^14.1.1"
+  }
+}
