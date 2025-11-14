@@ -1,0 +1,18 @@
+{
+  "name": "restcountries",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild src/index.js --outfile=dist/bundle.js --bundle --platform=browser --target=es2020",
+    "build:min": "esbuild src/index.js --outfile=dist/bundle.js --bundle --minify --platform=browser --target=es2020",
+    "dev": "esbuild src/index.js --outfile=dist/bundle.js --bundle --platform=browser --target=es2020 --watch --servedir=dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "esbuild": "^0.27.0"
+  }
+}
