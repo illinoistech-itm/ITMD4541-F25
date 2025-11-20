@@ -35,5 +35,8 @@ export function filterCountries(allCountries, searchInput, regionFilter) {
     return matchesSearch && matchesRegion;
   });
 
+  // Sort countries alphabetically by name
+  filteredCountries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+
   displayCountries(filteredCountries);
 }

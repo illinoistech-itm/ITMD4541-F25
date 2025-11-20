@@ -1,22 +1,140 @@
-(()=>{var a=console.log.bind(window,"%cLOG:","color: white; background-color: red;");function h(e){let t=document.createElement("div");t.className="country-card",t.addEventListener("click",()=>{C(e)});let o=e.population?e.population.toLocaleString():"N/A",n=e.region||"N/A",i=e.capital?e.capital[0]:"N/A";return t.innerHTML=`
-  <img src="${e.flags.png}" alt="Flag of ${e.name.common}" class="country-flag" />
+(() => {
+  // src/log.js
+  var log = console.log.bind(
+    window,
+    "%cLOG:",
+    "color: white; background-color: red;"
+  );
+
+  // src/ui.js
+  function createCountryCard(country) {
+    const countryCard = document.createElement("div");
+    countryCard.className = "country-card";
+    countryCard.addEventListener("click", () => {
+      showCountryDetails(country);
+    });
+    const population = country.population ? country.population.toLocaleString() : "N/A";
+    const region = country.region || "N/A";
+    const capital = country.capital ? country.capital[0] : "N/A";
+    countryCard.innerHTML = `
+  <img src="${country.flags.png}" alt="Flag of ${country.name.common}" class="country-flag" />
   <div class="country-info">
-    <div class="country-name">${e.name.common}</div>
-    <div class="country-detail"><strong>Population:</strong> ${o}</div>
-    <div class="country-detail"><strong>Region:</strong> ${n}</div>
-    <div class="country-detail"><strong>Capital:</strong> ${i}</div>
+    <div class="country-name">${country.name.common}</div>
+    <div class="country-detail"><strong>Population:</strong> ${population}</div>
+    <div class="country-detail"><strong>Region:</strong> ${region}</div>
+    <div class="country-detail"><strong>Capital:</strong> ${capital}</div>
   </div>
-  `,t}function c(e){let t=document.getElementById("content"),o=document.getElementById("resultsCount");if(o.textContent=`${e.length} ${e.length===1?"country":"countries"}`,e.length===0){t.innerHTML="<div class='no-results'>No countries found. Try a different query.</div>";return}let n=document.createElement("div");n.className="countries-grid",e.forEach(i=>{n.appendChild(h(i))}),t.innerHTML="",t.appendChild(n)}function C(e){a("Country clicked:",e.name.common);let t=document.getElementById("modal"),o=document.getElementById("modalBody"),n=document.getElementById("closeModal"),i=e.population?e.population.toLocaleString():"N/A",d=e.capital?e.capital.join(", "):"N/A",l=e.languages?Object.values(e.languages).join(", "):"N/A",g=e.currencies?Object.values(e.currencies).map(s=>s.name).join(", "):"N/A",m=e.region||"N/A",v=e.subregion||"N/A",f=e.area?e.area.toLocaleString()+" km\xB2":"N/A";o.innerHTML=`
-                <img src="${e.flags.png}" alt="${e.name.common} flag" class="modal-flag">
+  `;
+    return countryCard;
+  }
+  function displayCountries(countries) {
+    const content = document.getElementById("content");
+    const resultsCount = document.getElementById("resultsCount");
+    resultsCount.textContent = `${countries.length} ${countries.length === 1 ? "country" : "countries"}`;
+    if (countries.length === 0) {
+      content.innerHTML = "<div class='no-results'>No countries found. Try a different query.</div>";
+      return;
+    }
+    const grid = document.createElement("div");
+    grid.className = "countries-grid";
+    countries.forEach((country) => {
+      grid.appendChild(createCountryCard(country));
+    });
+    content.innerHTML = "";
+    content.appendChild(grid);
+  }
+  function showCountryDetails(country) {
+    log("Country clicked:", country.name.common);
+    const modal = document.getElementById("modal");
+    const modalBody = document.getElementById("modalBody");
+    const modalClose = document.getElementById("closeModal");
+    const population = country.population ? country.population.toLocaleString() : "N/A";
+    const capital = country.capital ? country.capital.join(", ") : "N/A";
+    const languages = country.languages ? Object.values(country.languages).join(", ") : "N/A";
+    const currencies = country.currencies ? Object.values(country.currencies).map((currency) => currency.name).join(", ") : "N/A";
+    const region = country.region || "N/A";
+    const subregion = country.subregion || "N/A";
+    const area = country.area ? country.area.toLocaleString() + " km\xB2" : "N/A";
+    modalBody.innerHTML = `
+                <img src="${country.flags.png}" alt="${country.name.common} flag" class="modal-flag">
                 <div class="modal-info">
-                    <h2 class="modal-title">${e.name.common}</h2>
-                    <div class="modal-detail"><strong>Official Name:</strong> ${e.name.official}</div>
-                    <div class="modal-detail"><strong>Capital:</strong> ${d}</div>
-                    <div class="modal-detail"><strong>Region:</strong> ${m}</div>
-                    <div class="modal-detail"><strong>Subregion:</strong> ${v}</div>
-                    <div class="modal-detail"><strong>Population:</strong> ${i}</div>
-                    <div class="modal-detail"><strong>Area:</strong> ${f}</div>
-                    <div class="modal-detail"><strong>Languages:</strong> ${l}</div>
-                    <div class="modal-detail"><strong>Currencies:</strong> ${g}</div>
+                    <h2 class="modal-title">${country.name.common}</h2>
+                    <div class="modal-detail"><strong>Official Name:</strong> ${country.name.official}</div>
+                    <div class="modal-detail"><strong>Capital:</strong> ${capital}</div>
+                    <div class="modal-detail"><strong>Region:</strong> ${region}</div>
+                    <div class="modal-detail"><strong>Subregion:</strong> ${subregion}</div>
+                    <div class="modal-detail"><strong>Population:</strong> ${population}</div>
+                    <div class="modal-detail"><strong>Area:</strong> ${area}</div>
+                    <div class="modal-detail"><strong>Languages:</strong> ${languages}</div>
+                    <div class="modal-detail"><strong>Currencies:</strong> ${currencies}</div>
                 </div>
-            `,t.classList.add("active"),n.addEventListener("click",()=>{t.classList.remove("active")}),t.addEventListener("click",s=>{s.target===t&&t.classList.remove("active")}),document.addEventListener("keydown",s=>{s.key==="Escape"&&t.classList.remove("active")})}async function p(){try{let t=await fetch("https://restcountries.com/v3.1/all?fields=name,capital,population,region,subregion,flags,languages,currencies,area");if(!t.ok)throw new Error("Failed to fetch countries.");return await t.json()}catch(e){throw new Error("Failed to fetch countries: "+e.message)}}function u(e,t,o){let n=t.value.toLowerCase(),i=o.value;a("Search input changed:",n),a("Region filter changed:",i);let d=e.filter(l=>{let g=l.name.common.toLowerCase().includes(n),m=i==="all"||l.region===i;return g&&m});c(d)}a("Hello, Restcountries!");var r=[];window.addEventListener("DOMContentLoaded",async()=>{a("DOM fully loaded and parsed");let e=document.getElementById("searchInput"),t=document.getElementById("regionFilter");e.addEventListener("input",()=>{u(r,e,t)}),t.addEventListener("change",()=>{u(r,e,t)});try{r=await p(),a("Fetched countries:",r)}catch(o){a("Error fetching countries:",o);let n=document.getElementById("content");n.innerHTML="<div class='error'>Error fetching countries. Please try again later.</div>";return}c(r)});})();
+            `;
+    modal.classList.add("active");
+    modalClose.addEventListener("click", () => {
+      modal.classList.remove("active");
+    });
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.classList.remove("active");
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        modal.classList.remove("active");
+      }
+    });
+  }
+
+  // src/api.js
+  async function fetchCountries() {
+    try {
+      const endpoint = "https://restcountries.com/v3.1/all?fields=name,capital,population,region,subregion,flags,languages,currencies,area";
+      const response = await fetch(endpoint);
+      if (!response.ok) {
+        throw new Error("Failed to fetch countries.");
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      throw new Error("Failed to fetch countries: " + error.message);
+    }
+  }
+  function filterCountries(allCountries2, searchInput, regionFilter) {
+    const searchTerm = searchInput.value.toLowerCase();
+    const selectedRegion = regionFilter.value;
+    log("Search input changed:", searchTerm);
+    log("Region filter changed:", selectedRegion);
+    const filteredCountries = allCountries2.filter((country) => {
+      const matchesSearch = country.name.common.toLowerCase().includes(searchTerm);
+      const matchesRegion = selectedRegion === "all" || country.region === selectedRegion;
+      return matchesSearch && matchesRegion;
+    });
+    filteredCountries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+    displayCountries(filteredCountries);
+  }
+
+  // src/index.js
+  log("Hello, Restcountries!");
+  var allCountries = [];
+  window.addEventListener("DOMContentLoaded", async () => {
+    log("DOM fully loaded and parsed");
+    const searchInput = document.getElementById("searchInput");
+    const regionSelect = document.getElementById("regionFilter");
+    searchInput.addEventListener("input", () => {
+      filterCountries(allCountries, searchInput, regionSelect);
+    });
+    regionSelect.addEventListener("change", () => {
+      filterCountries(allCountries, searchInput, regionSelect);
+    });
+    try {
+      allCountries = await fetchCountries();
+      log("Fetched countries:", allCountries);
+    } catch (error) {
+      log("Error fetching countries:", error);
+      const content = document.getElementById("content");
+      content.innerHTML = "<div class='error'>Error fetching countries. Please try again later.</div>";
+      return;
+    }
+    displayCountries(allCountries);
+  });
+})();
